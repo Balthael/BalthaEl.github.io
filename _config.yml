@@ -16,13 +16,13 @@ minimal_mistakes_skin    : "haxor" # "air", "aqua", "contrast", "dark", "dirt", 
 
 # Site Settings
 locale                   : "es-ES"
-title                    : "Luis Miranda Sierra"
+title                    : "Balthael"
 title_separator          : "-"
-name                     : "Luis"
+name                     : "John"
 description              : "Blog sobre ciberseguridad"
-url                      : "https://void4m0n.github.io/" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+url                      : "https://github.com/Balthael" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
-repository               : "Void4m0n/Void4m0n.github.io" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
+repository               : "Balthael/BalthaEl.github.io" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 logo                     : # "/assets/images/masthead.png"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 breadcrumbs              : true # true, false (default)
@@ -101,11 +101,11 @@ analytics:
 
 # Site Author
 author:
-  name             : "Luis Miranda Sierra"
-  avatar           : "/assets/images/void4m0n.png"
-  bio              : "ASIR | eJPT | Pentester | CTF player"
-  location         : "España"
-  email            : "Miranda.sierra.luis@gmail.com"
+  name             : "John Osorio"
+  avatar           : "/assets/images/bird2.jpg"
+  bio              : "Entusiaste de ciberseguridad| Pentester | CTF player"
+  location         : "Colombia"
+  email            : "balthaelhack@gmail.com"
   uri              :
   home             : # null (default), "absolute or relative url to link to author home"
   bitbucket        :
@@ -114,23 +114,23 @@ author:
   flickr           :
   facebook         :
   foursquare       :
-  github           : "Void4m0n"
+  github           : "https://github.com/Balthael"
   gitlab           :
   google_plus      :
   keybase          :
   instagram        :
   lastfm           :
-  linkedin         : "luis-miranda-sierra-1358a4221" # (the last part of your profile url, e.g. https://www.linkedin.com/in/john-doe-12345678)
+  linkedin         : "https://www.linkedin.com/in/johnosoriob/" # (the last part of your profile url, e.g. https://www.linkedin.com/in/john-doe-12345678)
   pinterest        :
   soundcloud       :
   stackoverflow    : # "123456/username" (the last part of your profile url, e.g. https://stackoverflow.com/users/123456/username)
   steam            : # "steamId" (the last part of your profile url, e.g. https://steamcommunity.com/id/steamId/)
   tumblr           :
-  twitter          : "Void4m0n"
+  twitter          : "https://twitter.com/Baltha_El"
   vine             :
   weibo            :
   xing             :
-  youtube          : "https://www.youtube.com/channel/UCkdBKlJ8fKHrfEM1FI6YkcA"
+  youtube          : "https://www.youtube.com/channel/UCPfjPiA9CzafKt4z8NA5ydg"
 
 
 # Reading Files
