@@ -10,6 +10,7 @@ header:
   icon: /assets/images/hackthebox.png
 categories:
   - Hack The Box
+  - Linux 
   - eWPT
   - Easy
 tags:  
