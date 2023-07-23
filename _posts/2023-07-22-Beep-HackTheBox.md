@@ -1,11 +1,11 @@
 ---
 layout: single
-title: <span style="color:#c9831a">Nibbles </span><span class="en_blanco">-</span><span class="htb"> Hack The Box </span><span class="en_blanco">- </span><span class="es_rojo">E</span><span class="es_amarillo">S</span><span class="es_rojo">P</span>
+title: <span style="color:#c9831a">Beep </span><span class="en_blanco">-</span><span class="htb"> Hack The Box </span><span class="en_blanco">- </span><span class="es_rojo">E</span><span class="es_amarillo">S</span><span class="es_rojo">P</span>
 excerpt: "En este post realizaremos el write up de la máquina Nibbles. Tocaremos los conceptos de fuzzing, credenciales por defecto, explotación de la vulnerabilidad Arbitrary File Upload (CVE-2015-6967) y escalaremos privilegios mediante la modificación de un script, ejecutándolo con sudo."
 date: 2022-11-26
 classes: wide
 header:
-  teaser: /assets/images/Nibbles/nibbles.png
+  teaser: /assets/images/Beep/beep.png
   teaser_home_page: true
   icon: /assets/images/hackthebox.png
 categories:
@@ -13,81 +13,126 @@ categories:
   - Esp
   - Easy
 tags:  
-  - Credentials guessing
-  - Arbitrary file upload 
-  - CVE-2015-6967
-  - Sudo -l
+  - Elastix 2.2.0 Exploitation 
+  - Local File Inclusion (LFI)
+  - Information Leakage
+  - Vtiger CRM Exploitation 
+  - Shellshock Attack (2nd way) [RCE]
+  - Abusing File Upload (1st way) [RCE] 
 ---
 
 ## DESCRIPCION
 
-En este post realizaremos el write up de la máquina Nibbles. Tocaremos los conceptos de fuzzing, credenciales por defecto, explotación de la vulnerabilidad Arbitrary File Upload (CVE-2015-6967) y escalaremos privilegios mediante la modificación de un script, ejecutándolo con sudo.
+En este post realizaremos el write up de la máquina Beep. Tocaremos los conceptos de Elastix, Path Traversal, Shellshock,  haremos una explotación de la vulnerabilidad de abuso de subida de archivos existente en el vtiger CRM como tambien un Shellshock Attack.
 
-![](../assets/images/Nibbles/descripcion_nibbles.png)
+![](../assets/images/Beep/beep2.png)
 
 ## INDICE
-
-- [Reconocimiento de puertos](#escaneo-de-puertos)
-- [Reconocimiento web](#reconocimiento-web)
-  - [Fuzzing de archivos](#wfuzz)
-    - [Update.php](#update)
-    - [Admin.php](#admin)
-  - [Credenciales válidas](#credenciales)
-    - [Usuario](#usuario)
-    - [Contraseña](#pass)
+- [Reconocimiento](#fase-de-reconocimiento)
+    - [Reconocimiento de puertos](#escaneo-de-puertos)
+    - [Reconocimiento web](#reconocimiento-web)
+    - [Que es Elastix](#Conceptos) 
+- [Credenciales válidas](#credenciales)
+- [Usuario](#usuario)
+- [Contraseña](#pass)
 - [Intrusión](#intrusion)
 - [Escalada de privilegios](#escalada-de-privilegios)
 - [Flags](#flags)
 - [Conocimientos obtenidos](#conocimientos-obtenidos)
 - [Autores y referencias](#autores-y-referencias)
 
-## ESCANEO DE PUERTOS
+## RECONOCIMIENTO
+El objetivo principal de la etapa de reconocimiento es obtener una visión general de la infraestructura, sistemas, aplicaciones y posibles puntos débiles de la organización o sistema que se va a someter a la prueba de penetración. Esta información es esencial para planificar y ejecutar el resto del proceso de pentesting de manera más efectiva.
 
-Escaneamos con `nmap` los puertos abiertos en la máquina Nibbles:
+Durante la etapa de reconocimiento, el equipo de pentesting puede realizar diferentes acciones y técnicas, que incluyen:
+
+1.`Búsqueda de información pública:` Se recopila información de dominios, subdominios, direcciones IP, registros de DNS, información de contacto de la empresa, etc., que está disponible públicamente a través de fuentes como el sitio web de la empresa, registros WHOIS, redes sociales, motores de búsqueda, entre otros.
+
+2.`Escaneo de red:` Se utilizan herramientas de escaneo de puertos y servicios para identificar los sistemas en línea y los puertos abiertos en el objetivo. Esto ayuda a tener una idea de la infraestructura de red y los servicios disponibles.
+
+3.`Enumeración de servicios:` Una vez identificados los servicios y puertos abiertos, se intenta obtener información más detallada sobre los servicios, como las versiones de software, para determinar si existen vulnerabilidades conocidas asociadas con esos servicios.
+
+4.`Búsqueda de subdominios y directorios ocultos:` Se busca información adicional sobre posibles subdominios, directorios ocultos o páginas web no enlazadas públicamente, lo que podría revelar puntos de entrada adicionales o información sensible.
+
+5.`Análisis de arquitectura de red:` Se investiga la topología de la red para comprender la relación entre diferentes sistemas y cómo se conectan, lo que ayuda a identificar posibles rutas para movimientos laterales.
+
+6.`Búsqueda de vulnerabilidades conocidas:` Se investigan bases de datos de vulnerabilidades conocidas y bases de datos de exploits para identificar posibles vulnerabilidades que puedan existir en el software o servicios utilizados por el objetivo.
+
+- Lo primero que vamos hacer es un ping a la maquina victima `ping -c 1 10.10.10.7`
+  `ping:` Es el comando utilizado para enviar solicitudes de eco (ping) a una dirección IP específica para verificar la conectividad de red y la latencia de la conexión.
+  `-c 1:` Es una opción que se utiliza para especificar el número de solicitudes de eco que se enviarán. En este caso, se envía solo una solicitud (-c 1).
+  `10.10.10.7:` Es la dirección IP del host o máquina que será objeto del comando ping.
 
 ```ruby
-❯ cat Puertos
-───────┬───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: Puertos
-───────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ # Nmap 7.92 scan initiated Mon Jul 25 17:48:56 2022 as: nmap --open -p- -T5 -oG Puertos 10.10.10.75
-   2   │ Host: 10.10.10.75 ()    Status: Up
-   3   │ Host: 10.10.10.75 ()    Ports: 22/open/tcp//ssh///, 80/open/tcp//http///
-   4   │ # Nmap done at Mon Jul 25 17:49:09 2022 -- 1 IP address (1 host up) scanned in 13.05 seconds
-───────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-❯ Reconocimiento Puertos
+❯ ping -c 1  10.10.14.168
+PING 10.10.14.168 (10.10.14.168) 56(84) bytes of data.
+64 bytes from 10.10.14.168: icmp_seq=1 ttl=64 time=0.025 ms
 
-{*} Extrayendo puertos...
+--- 10.10.14.168 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.025/0.025/0.025/0.000 ms
+```
+En este caso, el TTL=64 indica que es una máquina Linux.
 
-    La direccion ip es: 10.10.10.75
-    Los puertos abiertos son: 22,80
+## ESCANEO DE PUERTOS
 
-    Los puertos han sido copiados al portapapeles
+Realizamos un escaneo de puertos usando la herramienta `nmap`:
+
+`nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn 10.10.10.7 -oG scanPorts`
+
+Veamos el significado de cada opción utilizada en el comando:
+
+- `nmap`: Es el comando para ejecutar la herramienta de escaneo de puertos `nmap`.
+
+- `-p-`: Esta opción indica que se deben escanear todos los puertos, es decir, desde el puerto 1 hasta el puerto 65535.
+
+- `--open`: Filtra los resultados del escaneo para mostrar solo los puertos que están abiertos, es decir, aquellos que responden a la solicitud de escaneo.
+
+- `-sS`: Indica un escaneo de tipo "SYN scan". Este tipo de escaneo envía paquetes SYN (sincronización) a los puertos y analiza las respuestas para determinar si están abiertos, cerrados o filtrados por firewall.
+
+- `--min-rate 5000`: Establece la velocidad mínima de envío de paquetes. En este caso, se envían al menos 5000 paquetes por segundo.
+
+- `-vvv`: Habilita el modo de salida muy detallado, lo que significa que se mostrarán niveles de verbosidad muy altos para obtener información detallada del escaneo.
+
+- `-n`: Indica que no se realice la resolución de DNS para las direcciones IP, lo que acelera el escaneo.
+
+- `-Pn`: Esta opción indica que no se realice el "ping" para determinar si los hosts están en línea o no. Se ignoran las respuestas del ping y se escanea directamente.
+
+- `10.10.10.7`: Es la dirección IP del objetivo que será escaneado.
+
+- `-oG scanPorts`: Especifica que se debe guardar la salida del escaneo en un formato "grepable" (formato de texto plano) con el nombre de archivo "scanPorts".
+
+```ruby
+❯ cat scanPorts
+───────┬────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: scanPorts
+───────┼────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ # Nmap 7.93 scan initiated Sun Jul 23 01:05:09 2023 as: nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn -oG scanPorts 10.10.10.7
+   2   │ # Ports scanned: TCP(65535;1-65535) UDP(0;) SCTP(0;) PROTOCOLS(0;)
+   3   │ Host: 10.10.10.7 () Status: Up
+   4   │ Host: 10.10.10.7 () Ports: 22/open/tcp//ssh///, 25/open/tcp//smtp///, 80/open/tcp//http///, 110/open/tcp//pop3///, 111/open/tcp//rpcbind///, 143/open/tcp//imap///, 443/open/tc
+       │ p//https///, 878/open/tcp//unknown///, 993/open/tcp//imaps///, 995/open/tcp//pop3s///, 3306/open/tcp//mysql///, 4190/open/tcp//sieve///, 4445/open/tcp//upnotifyp///, 4559/open
+       │ /tcp//hylafax///, 5038/open/tcp/////, 10000/open/tcp//snet-sensor-mgmt///
+   5   │ # Nmap done at Sun Jul 23 01:05:32 2023 -- 1 IP address (1 host up) scanned in 23.61 seconds
+───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ```
 
 <br>
 Escaneamos al objetivo con los scripts predeterminados de nmap, apuntando a los puertos abiertos en busca de más información.
 
 ```ruby
-❯ cat Objetivos
-───────┬───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-       │ File: Objetivos
-───────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1   │ nmap -sCV -p 22,80 -oN Objetivos 10.10.10.75
-   2   │ Nmap scan report for 10.10.10.75
-   3   │ Host is up (0.043s latency).
-   4   │ 
-   5   │ PORT   STATE SERVICE VERSION
-   6   │ 22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
-   7   │ | ssh-hostkey: 
-   8   │ |   2048 c4:f8:ad:e8:f8:04:77:de:cf:15:0d:63:0a:18:7e:49 (RSA)
-   9   │ |   256 22:8f:b1:97:bf:0f:17:08:fc:7e:2c:8f:e9:77:3a:48 (ECDSA)
-  10   │ |_  256 e6:ac:27:a3:b5:a9:f1:12:3c:34:a5:5d:5b:eb:3d:e9 (ED25519)
-  11   │ 80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
-  12   │ |_http-server-header: Apache/2.4.18 (Ubuntu)
-  13   │ |_http-title: Site doesn't have a title (text/html).
-  14   │ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-───────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────## 
+❯ cat scanPorts
+───────┬────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: scanPorts
+───────┼────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ # Nmap 7.93 scan initiated Sun Jul 23 01:05:09 2023 as: nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn -oG scanPorts 10.10.10.7
+   2   │ # Ports scanned: TCP(65535;1-65535) UDP(0;) SCTP(0;) PROTOCOLS(0;)
+   3   │ Host: 10.10.10.7 () Status: Up
+   4   │ Host: 10.10.10.7 () Ports: 22/open/tcp//ssh///, 25/open/tcp//smtp///, 80/open/tcp//http///, 110/open/tcp//pop3///, 111/open/tcp//rpcbind///, 143/open/tcp//imap///, 443/open/tc
+       │ p//https///, 878/open/tcp//unknown///, 993/open/tcp//imaps///, 995/open/tcp//pop3s///, 3306/open/tcp//mysql///, 4190/open/tcp//sieve///, 4445/open/tcp//upnotifyp///, 4559/open
+       │ /tcp//hylafax///, 5038/open/tcp/////, 10000/open/tcp//snet-sensor-mgmt///
+   5   │ # Nmap done at Sun Jul 23 01:05:32 2023 -- 1 IP address (1 host up) scanned in 23.61 seconds
+───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ```
 
 ## RECONOCIMIENTO WEB
