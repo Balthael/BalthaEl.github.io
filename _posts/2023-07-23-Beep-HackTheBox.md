@@ -1,6 +1,6 @@
 ---
 layout: single
-title: <span style="color:#c9831a">Beep </span><span class="en_blanco">-</span><span class="htb"> Hack The Box </span><span class="en_blanco">- </span><span class="es_rojo">E</span><span class="es_amarillo">S</span><span class="es_rojo">P</span>
+title: <span style="color:#9FEF00">Beep </span><span class="htb">-</span><span class="htb"> Hack The Box </span><span class="htb">-</span><span class="htb">ESP</span>
 excerpt: "En este post realizaremos el write up de la máquina Beep. Tocaremos los conceptos de Elastix, Path Traversal, Shellshock,  haremos una explotación de la vulnerabilidad de abuso de subida de archivos existente en el vtiger CRM como tambien un Shellshock Attack."
 date: 2023-07-23
 classes: wide
@@ -21,14 +21,14 @@ tags:
   - Shellshock Attack (2nd way) [RCE]
   - Abusing File Upload (1st way) [RCE] 
 ---
-
-## DESCRIPCION
+<h3 style="text-align:center">DESCRIPCIÓN</h3><hr>
 
 En este post realizaremos el write up de la máquina Beep. Tocaremos los conceptos de Elastix, Path Traversal, Shellshock,  haremos una explotación de la vulnerabilidad de abuso de subida de archivos existente en el vtiger CRM como tambien un Shellshock Attack.
 
 ![](../assets/images/Beep/beep2.png)
 
-## INDICE
+<h3 style="text-align:center">INDICE</h3><hr>
+
 - [Reconocimiento](#fase-de-reconocimiento)
     - [Enumeración de puertos](#enumeracion-de-puertos)
     - [Enumeración de servicios](#enumeracion-de-servicios)
