@@ -323,7 +323,7 @@ Ahora vemos si la Web lo interpreta y de esa manera concluimos que esta sincroni
 
 ![](../assets/images/Devel/weblointerpreta.png)
 - Como es un servicio IIS debemos subir un archivo con la extensión .aspx 
-- Si buscamos en nuestra máquina archivos con extensión  .aspx nos arroja muchos, en esta casi vamos a usar uno de cmd para que la web nos de un cmd. 
+- Si buscamos en nuestra máquina archivos con extensión  .aspx nos arroja muchos, en esta caso vamos a usar uno de cmd para que la web nos de un cmd. 
 
 ```ruby
 ❯ locate .aspx | grep cmd
@@ -658,7 +658,7 @@ Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
 [*] Config file parsed
 
 ```
-Con smbserver  creamos un recurso compartido a nivel de red identificado como smbFolder y que esta sincronizado con la ruta absoluta actual de trabajo.
+Con smbserver  creamos un recurso compartido a nivel de red identificado como smbFolder y que está sincronizado con la ruta absoluta actual de trabajo.
 
 - En la máquina victima nos dirigimos a `cd C:\Windows\Temp` nos creamos un directorio que lo llamaremos privesc nos metemos alli para guardar el .exe
 `cd privesc` 
