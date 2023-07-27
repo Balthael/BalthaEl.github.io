@@ -58,7 +58,7 @@ Durante la etapa de reconocimiento, el equipo de pentesting puede realizar difer
 
 6.`Búsqueda de vulnerabilidades conocidas:` Se investigan bases de datos de vulnerabilidades conocidas y bases de datos de exploits para identificar posibles vulnerabilidades que puedan existir en el software o servicios utilizados por el objetivo.
 
-- Lo primero que vamos hacer es un ping a la maquina victima ping -c 1 10.10.10.5 ping: Es el comando utilizado para enviar solicitudes de eco (ping) a una dirección IP específica para verificar la conectividad de red y la latencia de la conexión. -c 1: Es una opción que se utiliza para especificar el número de solicitudes de eco que se enviarán. En este caso, se envía solo una solicitud (-c 1). 10.10.10.7: Es la dirección IP del host o máquina que será objeto del comando ping.
+- Lo primero que vamos hacer es un ping a la maquina victima ping -c 1 10.10.10.5 ping: Es el comando utilizado para enviar solicitudes de eco (ping) a una dirección IP específica para verificar la conectividad de red y la latencia de la conexión. -c 1: Es una opción que se utiliza para especificar el número de solicitudes de eco que se enviarán. En este caso, se envía solo una solicitud (-c 1). 10.10.10.5: Es la dirección IP del host o máquina que será objeto del comando ping.
 
 ```ruby
 ping -c 1 10.10.10.5
@@ -97,7 +97,7 @@ Veamos el significado de cada opción utilizada en el comando:
 
 - `-Pn`: Esta opción indica que no se realice el "ping" para determinar si los hosts están en línea o no. Se ignoran las respuestas del ping y se escanea directamente.
 
-- `10.10.10.7`: Es la dirección IP del objetivo que será escaneado.
+- `10.10.10.5`: Es la dirección IP del objetivo que será escaneado.
 
 - `-oG scanPorts`: Especifica que se debe guardar la salida del escaneo en un formato "grepable" (formato de texto plano) con el nombre de archivo "scanPorts".
 
