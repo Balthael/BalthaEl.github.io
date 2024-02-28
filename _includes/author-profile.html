@@ -68,8 +68,8 @@
 
       {% if author.email %}
         <li>
-          <a href="mailto:{{ author.email }}">
-            <meta itemprop="email" content="{{ author.email }}" />
+          <a href="mailto:balthaelhack@gmail.com">
+            <meta itemprop="email" content="balthaelhack@gmail.com" />
             <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].email_label | default: "Email" }}
           </a>
         </li>
@@ -85,7 +85,7 @@
 
       {% if author.twitter %}
         <li>
-          <a href="https://twitter.com/{{ author.twitter }}" itemprop="sameAs" rel="nofollow noopener noreferrer">
+          <a href="https://twitter.com/Baltha_El" itemprop="sameAs" rel="nofollow noopener noreferrer">
             <i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter
           </a>
         </li>
@@ -109,7 +109,7 @@
 
       {% if author.linkedin %}
         <li>
-          <a href="https://www.linkedin.com/in/{{ author.linkedin }}" itemprop="sameAs" rel="nofollow noopener noreferrer">
+          <a href="https://www.linkedin.com/in/johnosoriob/" itemprop="sameAs" rel="nofollow noopener noreferrer">
             <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn
           </a>
         </li>
@@ -125,7 +125,7 @@
 
       {% if author.instagram %}
         <li>
-          <a href="https://instagram.com/{{ author.instagram }}" itemprop="sameAs" rel="nofollow noopener noreferrer">
+          <a href="https://instagram.com/joh_sb" itemprop="sameAs" rel="nofollow noopener noreferrer">
             <i class="fab fa-fw fa-instagram" aria-hidden="true"></i> Instagram
           </a>
         </li>
@@ -149,7 +149,7 @@
 
       {% if author.github %}
         <li>
-          <a href="https://github.com/{{ author.github }}" itemprop="sameAs" rel="nofollow noopener noreferrer">
+          <a href="https://github.com/Balthael/" itemprop="sameAs" rel="nofollow noopener noreferrer">
             <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
           </a>
         </li>
@@ -210,8 +210,7 @@
           </a>
         </li>
       {% endif %}
-
-      {% if author.youtube %}
+     {% if author.youtube %}
         {% if author.youtube contains "://" %}
           <li>
             <a href="{{ author.youtube }}" itemprop="sameAs" rel="nofollow noopener noreferrer">
