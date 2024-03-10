@@ -12,8 +12,7 @@ categories:
   - Hack The Box
   - Linux 
   - eWPT
-  - OSCP(Escalada)
-  - CronJob
+  - OSCP
 tags: 
   - Virtual Hosting 
   - Web Enumeration 
